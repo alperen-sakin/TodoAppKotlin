@@ -1,0 +1,18 @@
+# See the default config file for all rules
+# https://github.com/detekt/detekt/blob/main/detekt-core/src/main/resources/default-detekt-config.yml
+
+formatting:
+  NoWildcardImports:
+    active: false
+
+style:
+  WildcardImport:
+    active: false
+  MagicNumber:
+    active: true
+    excludes: [ '**/theme/**' ]
+
+naming:
+  FunctionNaming:
+    active: true
+    ignoreAnnotated: ['Composable']
