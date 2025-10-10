@@ -21,4 +21,14 @@
     <string name="confirm_password_error">*Passwords do not match!</string>
     <string name="account_not_found">Account not found</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="task_title">Task Title</string>
+    <string name="enter_task_title">Enter Task Title</string>
+    <string name="description">Description</string>
+    <string name="enter_task_description">Enter Task Description</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="title_error">Title cannot be empty</string>
+    <string name="date_error">Date cannot be empty</string>
+    <string name="time_error">Time cannot be empty</string>
 </resources>

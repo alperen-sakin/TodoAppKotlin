@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -73,8 +74,8 @@ dependencies {
     // Hilt ve Compose
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Room
     implementation(libs.room.runtime)
