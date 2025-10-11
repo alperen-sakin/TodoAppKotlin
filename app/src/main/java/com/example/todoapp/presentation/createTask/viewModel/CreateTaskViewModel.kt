@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.sql.SQLDataException
+import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeParseException
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
@@ -116,7 +116,7 @@ class CreateTaskViewModel @Inject constructor(
             )
         }
 
-        val allFieldValid = isTimeValid && isDateValid && isTimeValid
+        val allFieldValid = isTimeValid && isDateValid && isTaskTitleValid
 
         if (allFieldValid) {
             onSave()
@@ -132,10 +132,10 @@ class CreateTaskViewModel @Inject constructor(
 
         val dateTimeString = "$dateString $timeString"
 
-        val formatter = SimpleDateFormat("MM dd, yyyy HH:mm", Locale.getDefault())
+        val formatter = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
         val combineDate = try {
             formatter.parse(dateTimeString)
-        } catch (e: DateTimeParseException) {
+        } catch (e: ParseException) {
             Date()
         }
 

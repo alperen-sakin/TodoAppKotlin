@@ -36,22 +36,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todoapp.R
+import com.example.todoapp.presentation.homeScreen.component.states.TaskItemEvents
+import com.example.todoapp.presentation.homeScreen.component.states.TaskItemState
 import com.example.todoapp.ui.theme.DeleteButtonColor
 import com.example.todoapp.ui.theme.DoneButtonColor
 import com.example.todoapp.ui.theme.Poppins
-import com.example.todoapp.ui.theme.PriorityHighBackground
-import com.example.todoapp.ui.theme.PriorityHighText
 import com.example.todoapp.ui.theme.TextColor
 import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TaskItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: TaskItemState,
+    events: TaskItemEvents
 
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
@@ -69,20 +72,20 @@ fun TaskItem(
                     .padding(horizontal = 10.dp, vertical = 5.dp)
             ) {
                 TopInfoSection(
-                    taskName = "Task Name",
-                    priority = "High",
-                    priorityTextColor = PriorityHighText,
-                    priorityBackgroundColor = PriorityHighBackground
+                    taskTitle = state.taskTitle,
+                    priority = state.priorityText,
+                    priorityTextColor = state.priorityTextColor,
+                    priorityBackgroundColor = state.priorityBackgroundColor
                 )
                 Spacer(Modifier.height(10.dp))
                 DateInfoSection(
-                    date = LocalDateTime.now()
+                    date = state.dueDate
                 )
                 Spacer(Modifier.height(10.dp))
                 ButtonSection(
-                    // isTaskDone = false,
-                    onDoneClick = { /*TODO*/ },
-                    onDeleteClick = { /*TODO*/ }
+                    isTaskDone = state.isTaskDone,
+                    onDoneClick = { events.onDoneClick() },
+                    onDeleteClick = { events.onDeleteClick() },
                 )
                 Spacer(Modifier.height(20.dp))
             }
@@ -92,7 +95,8 @@ fun TaskItem(
                 isExpanded = isExpanded,
                 onDescriptionClicked = {
                     isExpanded = !isExpanded
-                }
+                },
+                description = state.description,
 
             )
 
@@ -103,8 +107,7 @@ fun TaskItem(
 
 @Composable
 fun TopInfoSection(
-    taskName: String,
-
+    taskTitle: String,
     priority: String,
     priorityTextColor: Color,
     priorityBackgroundColor: Color
@@ -117,7 +120,7 @@ fun TopInfoSection(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = taskName,
+            text = taskTitle,
             color = TextColor,
             fontSize = 20.sp,
             fontFamily = Poppins,
@@ -138,6 +141,7 @@ fun TopInfoSection(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DateInfoSection(
     date: LocalDateTime
@@ -159,7 +163,7 @@ fun DateInfoSection(
             Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = date.toString(),
+                text = date.toLocalDate().toString(),
                 color = Color.DarkGray,
                 fontSize = 14.sp,
                 fontFamily = Poppins,
@@ -179,7 +183,7 @@ fun DateInfoSection(
             Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = date.toString(),
+                text = date.toLocalTime().withNano(0).toString(),
                 color = Color.DarkGray,
                 fontSize = 14.sp,
                 fontFamily = Poppins,
@@ -191,9 +195,9 @@ fun DateInfoSection(
 
 @Composable
 fun ButtonSection(
-    // isTaskDone: Boolean,
     onDoneClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    isTaskDone: Boolean
 ) {
     Row(
         modifier = Modifier
@@ -201,30 +205,31 @@ fun ButtonSection(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Button(
-            onClick = { onDoneClick() },
-            shape = RoundedCornerShape(size = 12.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = DoneButtonColor,
-                contentColor = Color.White
-            ),
-            modifier = Modifier
-                .weight(1f)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Done,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(Modifier.width(8.dp))
+        if (!isTaskDone) {
+            Button(
+                onClick = { onDoneClick() },
+                shape = RoundedCornerShape(size = 12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = DoneButtonColor,
+                    contentColor = Color.White
+                ),
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Done,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(Modifier.width(8.dp))
 
-            Text(
-                text = "Done"
-            )
+                Text(
+                    text = stringResource(R.string.done)
+                )
+            }
+            Spacer(Modifier.width(10.dp))
         }
-
-        Spacer(Modifier.width(10.dp))
 
         Button(
             onClick = { onDeleteClick() },
@@ -245,7 +250,7 @@ fun ButtonSection(
             Spacer(Modifier.width(8.dp))
 
             Text(
-                text = "Delete"
+                text = stringResource(R.string.delete)
             )
         }
     }
@@ -255,7 +260,8 @@ fun ButtonSection(
 fun DescriptionSection(
     modifier: Modifier = Modifier,
     isExpanded: Boolean,
-    onDescriptionClicked: () -> Unit
+    onDescriptionClicked: () -> Unit,
+    description: String
 ) {
     HorizontalDivider()
     Spacer(Modifier.height(10.dp))
@@ -272,7 +278,7 @@ fun DescriptionSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Description",
+                text = stringResource(R.string.description),
                 color = TextColor,
                 fontSize = 14.sp,
                 fontFamily = Poppins,
@@ -292,10 +298,7 @@ fun DescriptionSection(
 
         if (isExpanded) {
             Text(
-                "Lorem ipsum dolor sit amet, " +
-                    "consectetur adipiscing elit, " +
-                    "sed do eiusmod tempor incididunt ut " +
-                    "labore et dolore magna aliqua.",
+                text = description.ifBlank { stringResource(R.string.no_description) },
                 color = TextColor,
                 fontFamily = Poppins,
                 fontWeight = FontWeight.Normal,
@@ -303,14 +306,4 @@ fun DescriptionSection(
             )
         }
     }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun TaskItemPreview() {
-    TaskItem(
-        modifier = Modifier.padding(10.dp),
-
-    )
 }
