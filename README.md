@@ -20,10 +20,9 @@ This is a modern to-do list application developed using Kotlin and Jetpack Compo
 
 ## 📸 Screenshots
 
-*(You can add screenshots of your application here.)*
 
 <p align="center">
-  <img src="art/ss_splash.png" width="1080" alt="Screenshot 1"/>
+  <img src="art/ss_splash.png" width="200" alt="Screenshot 1"/>
   &nbsp; &nbsp; &nbsp;
-  <img src="art/ss_create_account.png" width="1080" alt="Screenshot 2"/>
+  <img src="art/ss_create_account.png" width="200" alt="Screenshot 2"/>
 </p>
