@@ -25,4 +25,10 @@ This is a modern to-do list application developed using Kotlin and Jetpack Compo
   <img src="art/ss_splash.png" width="200" alt="Screenshot 1"/>
   &nbsp; &nbsp; &nbsp;
   <img src="art/ss_create_account.png" width="200" alt="Screenshot 2"/>
+
+  <img src="art/ss_login.png" width="200" alt="Screenshot 3"/>
+
+  <img src="art/ss_create_task.png" width="200" alt="Screenshot 4"/>
+
+  <img src="art/ss_home.png" width="200" alt="Screenshot 5"/>
 </p>
